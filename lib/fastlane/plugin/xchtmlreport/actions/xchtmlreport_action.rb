@@ -1,6 +1,8 @@
 require 'fastlane/action'
 require_relative '../helper/xchtmlreport_helper'
 
+require 'shellwords'
+
 module Fastlane
   module Actions
     class XchtmlreportAction < Action
@@ -27,7 +29,7 @@ module Fastlane
         UI.message("Result bundle path: #{result_bundle_path}")
 
         command_comps = [binary_path]
-        command_comps += result_bundle_paths.map { |path| "-r #{path}" }
+        command_comps += result_bundle_paths.map { |path| "-r #{path.shellescape}" }
         command_comps.append('-j') if params[:enable_junit]
 
         sh(command_comps.join(' '))
